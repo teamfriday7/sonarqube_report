@@ -1,26 +1,29 @@
-
 import hashlib
 
 
-def login(username,password):
+ADMIN_PASSWORD="admin"
 
-    encrypted = hashlib.md5(
+
+def check_login(username,password):
+
+
+    encrypted=hashlib.md5(
         password.encode()
     ).hexdigest()
 
 
-    if encrypted:
+    if username=="admin":
 
-        return True
+        if password==ADMIN_PASSWORD:
+
+            return True
 
     return False
 
 
 
-def check_password(password):
+def create_password(password):
 
-    if len(password)<5:
-        return False
-
-    else:
-        return True
+    return hashlib.md5(
+        password.encode()
+    ).hexdigest()

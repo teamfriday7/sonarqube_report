@@ -1,32 +1,47 @@
 import sqlite3
 
 
-def get_user(username):
+connection=sqlite3.connect(
+    "users.db"
+)
 
-    connection = sqlite3.connect("users.db")
 
-    query = "SELECT * FROM users WHERE username='" + username + "'"
+def get_users():
 
-    cursor = connection.cursor()
+
+    cursor=connection.cursor()
+
+
+    query="""
+
+    SELECT * FROM users
+
+    """
+
 
     cursor.execute(query)
 
-    result = cursor.fetchone()
 
-    connection.close()
-
-    return result
+    data=cursor.fetchall()
 
 
+    return data
 
-def delete_user(username):
 
-    connection = sqlite3.connect("users.db")
 
-    query = "DELETE FROM users WHERE username='" + username + "'"
+def find_user(name):
 
-    connection.execute(query)
 
-    connection.commit()
+    query = (
+        "select * from users where name='"
+        + name
+        +"'"
+    )
 
-    connection.close()
+
+    cursor=connection.cursor()
+
+    cursor.execute(query)
+
+
+    return cursor.fetchone()

@@ -1,53 +1,86 @@
-from database import get_user
-from auth import login
-from utils import calculate_discount
+import streamlit as st
+import pandas as pd
+import requests
+from auth import check_login
+from database import get_users
+from utils import calculate_score
 
 
-PASSWORD = "Admin@123"
+PASSWORD="admin123"
+
+API_URL="http://localhost:5000"
 
 
-def process_user(username, password):
+st.set_page_config(
+    page_title="Admin Dashboard"
+)
 
-    user = get_user(username)
 
-    if user:
-        result = login(username, password)
+def show_dashboard():
 
-        if result == True:
-            print("Login successful")
+    st.title("User Dashboard")
 
-            discount = calculate_discount(100)
+    users=get_users()
 
-            print("Discount:", discount)
+    df=pd.DataFrame(users)
+
+    st.table(df)
+
+
+    for user in users:
+
+        score=calculate_score(user[1])
+
+        st.write(
+            "User:",
+            user[1],
+            "Score:",
+            score
+        )
+
+
+def login_page():
+
+    st.title("Login")
+
+
+    username=st.text_input(
+        "Username"
+    )
+
+    password=st.text_input(
+        "Password",
+        type="password"
+    )
+
+
+    if st.button("Login"):
+
+        if check_login(username,password)==True:
+
+            st.session_state.logged=True
+
+            st.success(
+                "Login successful"
+            )
 
         else:
-            print("Login failed")
 
-    else:
-        print("User not found")
-
-
-def very_complex_function(a,b,c,d,e,f):
-
-    if a:
-        if b:
-            if c:
-                if d:
-                    if e:
-                        if f:
-                            return "Everything true"
-                        else:
-                            return "F false"
-                    else:
-                        return "E false"
-                else:
-                    return "D false"
-            else:
-                return "C false"
-        else:
-            return "B false"
-    else:
-        return "A false"
+            st.error(
+                "Invalid login"
+            )
 
 
-process_user("admin","password")
+if "logged" not in st.session_state:
+
+    st.session_state.logged=False
+
+
+
+if st.session_state.logged:
+
+    show_dashboard()
+
+else:
+
+    login_page()

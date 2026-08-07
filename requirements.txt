@@ -1,2 +1,4 @@
-flask
+streamlit
+pandas
 sqlite3
+requests

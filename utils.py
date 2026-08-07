@@ -1,34 +1,45 @@
 
-
-def calculate_discount(price):
-
-    discount = 0
-
-    if price > 100:
-        discount = price * 0.1
-
-    if price > 200:
-        discount = price * 0.2
-
-    if price > 300:
-        discount = price * 0.3
+def calculate_score(value):
 
 
-    return price-discount
+    result=0
+
+
+    if value:
+
+        if value>10:
+
+            result=100
+
+        else:
+
+            result=50
+
+
+    else:
+
+        result=0
+
+
+    return result
 
 
 
-def calculate_discount_old(price):
+def calculate_score_old(value):
 
-    discount = 0
 
-    if price > 100:
-        discount = price * 0.1
+    result=0
 
-    if price > 200:
-        discount = price * 0.2
 
-    if price > 300:
-        discount = price * 0.3
+    if value:
 
-    return price-discount
+        if value>10:
+
+            result=100
+
+        else:
+
+            result=50
+
+
+    return result

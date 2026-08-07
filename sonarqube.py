@@ -1,7 +1,11 @@
 import os
 import json
 import requests
+import urllib3
 from requests.auth import HTTPBasicAuth
+
+# Suppress SSL verification warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ==========================
 # CONFIGURATION
@@ -12,7 +16,7 @@ SONAR_TOKEN = "51c9835e01b91eb9c5834b762aaa51a93f8e33b9"
 PROJECT_KEY = "teamfriday7_aifridayfinal"
 
 # Local path to your Git repository
-REPO_PATH = r"C:\Users\YourName\Projects\my-repo"
+REPO_PATH = r"C:\repo\sonarqube_report"
 
 auth = HTTPBasicAuth(SONAR_TOKEN, "")
 
@@ -35,7 +39,7 @@ def fetch_all_issues():
             f"&ps={page_size}"
         )
 
-        response = requests.get(url, auth=auth)
+        response = requests.get(url, auth=auth, verify=False)
 
         if response.status_code != 200:
             raise Exception(response.text)
@@ -62,7 +66,7 @@ def fetch_rule(rule_key):
 
     url = f"{SONAR_HOST}/api/rules/show?key={rule_key}"
 
-    response = requests.get(url, auth=auth)
+    response = requests.get(url, auth=auth, verify=False)
 
     if response.status_code != 200:
         return None
